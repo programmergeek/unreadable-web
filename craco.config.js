@@ -10,7 +10,7 @@ module.exports = {
               require.resolve("react-dev-utils/webpackHotDevClient"),
             paths.appIndexJs,
           ].filter(Boolean),
-          content: "./src/chromeServices/DOMEvaluator.ts",
+          content: "./src/chromeServices/messageListeners/TextExtractor.ts",
         },
         output: {
           ...webpackConfig.output,
