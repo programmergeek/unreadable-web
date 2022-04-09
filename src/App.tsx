@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 
-const handleClick = () => {
+const handleClick = (
+  setText: React.Dispatch<React.SetStateAction<string[]>>
+) => {
   chrome.tabs &&
     chrome.tabs.query(
       {
@@ -12,16 +14,17 @@ const handleClick = () => {
         chrome.tabs.sendMessage(
           tabs[0].id || 0,
           "SCRAMBLE_TEXT",
-          (response: string[]) => console.log(response)
+          (response: string[]) => setText(response)
         );
       }
     );
 };
 
 function App() {
+  const [text, setText] = useState<string[]>([]);
   return (
     <div className="App">
-      <button onClick={() => handleClick()}>Make Me Illiterate</button>
+      <button onClick={() => handleClick(setText)}>Make Me Illiterate</button>
     </div>
   );
 }
