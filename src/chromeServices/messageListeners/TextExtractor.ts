@@ -12,25 +12,29 @@ chrome.runtime.onMessage.addListener(
   ) {
     console.log("[content.js]. Message received", request);
 
-    const response = () => {
-      // get all text from within the h1 tags
-      const headers = Array.from(document.getElementsByTagName("h1")).map(
-        (h1) => h1.innerText
-      );
-
-      // get all text from within the paragraph tags
-      const paragraphs = Array.from(document.getElementsByTagName("p")).map(
-        (p) => p.textContent
-      ) as string[];
-
-      const text = [] as string[];
-      text.concat(headers);
-      text.concat(paragraphs);
-      return text;
-    };
-
-    sendResponse(response());
+    sendResponse(getText());
   }
 );
+
+const getText = () => {
+  const text = [] as string[]; // array to hold all the text on the page
+  const headerTypes = ["h1", "h2", "h3", "h4", "h5", "h6"]; // array of header tag names
+
+  // get text from all header elements
+  for (const header of headerTypes) {
+    Array.from(
+      document.getElementsByTagName(
+        header
+      ) as HTMLCollectionOf<HTMLHeadingElement> // specify that we are looking for header elements
+    ).map((e) => {
+      text.push(e.innerText); // add header text to the array
+    });
+  }
+
+  Array.from(document.getElementsByTagName("p")).map((e) => {
+    text.push(e.textContent as string);
+  }); // get text from p elements and add it to the text array
+  return text;
+};
 
 export {};
